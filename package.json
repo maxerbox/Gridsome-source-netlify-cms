@@ -1,0 +1,39 @@
+{
+  "name": "gridsome-source-netlify-cms",
+  "version": "1.0.0",
+  "description": "Netlify-cms source for gridsome. Automatically load and parse folder and files collections.",
+  "main": "index.js",
+  "keywords": [
+    "gridsome",
+    "gridsome-plugin",
+    "gridsome-source"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ajv": "^6.12.2",
+    "ajv-errors": "^1.0.1",
+    "ajv-keywords": "^3.5.0",
+    "camelcase": "^6.0.0",
+    "dot-prop": "^5.2.0",
+    "esm": "^3.2.25",
+    "fs-extra": "^9.0.1",
+    "globby": "^11.0.1",
+    "immutable": "^3.8.2",
+    "mime-types": "^2.1.27",
+    "slash": "^3.0.0",
+    "yaml": "^1.8.3"
+  },
+  "devDependencies": {
+    "@nuxtjs/eslint-config": "^3.0.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.3.1",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-gridsome": "^1.4.13",
+    "eslint-plugin-prettier": "^3.1.4",
+    "prettier": "^2.0.5"
+  }
+}
