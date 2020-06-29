@@ -6,7 +6,7 @@ export default class Widget {
     this.schema = schema
   }
 
-  parse(content) {
+  async parse(content, path) {
     if (!content) {
       return null
     }

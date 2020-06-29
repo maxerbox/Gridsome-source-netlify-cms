@@ -1,18 +1,15 @@
 import mime from 'mime-types'
+import marked from 'marked'
+import sanatize from 'sanitize-html'
 import Widget from './widget'
 export default class MarkdownWidget extends Widget {
-  parse(content) {
+  async parse(content, path) {
     if (
       !content ||
       !Object.prototype.hasOwnProperty.call(content, this.field.get('name'))
     ) {
       return null
     }
-    const data = content[this.field.get('name')]
-    return this.parser.transformNodeContent(
-      data,
-      mime.lookup('.md'),
-      this.collection
-    )
+    return sanatize(marked(content[this.field.get('name')]))
   }
 }

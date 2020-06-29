@@ -38,7 +38,12 @@ class NetlifyCmsSource {
 
     api.loadSource(async (actions) => {
       this.netlifyConfig = await this.loadConfig(this.configPath)
-
+      api.chainWebpack((config) => {
+        config.resolve.alias.set(
+          '@netlifyMedia',
+          path.join(this.context, this.netlifyConfig.get('media_folder'))
+        )
+      })
       this.createCollections(actions)
       await this.createNodes(actions)
       if (isDev) this.watchFiles(actions)
@@ -82,10 +87,11 @@ class NetlifyCmsSource {
     }
   }
 
-  async transformNodeFiles(collection) {
+  async transformNodeFiles(collection, actions) {
     const node = collection.props.toJS()
     node.files = []
     const file = collection.props
+    const { dir, name } = path.parse(file.get('file'))
     const mimeType = mime.lookup(file.get('file'))
     if (!isSupportedMime(mimeType)) {
       throw new Error(`${mimeType} is not supported for file parsing`)
@@ -100,7 +106,8 @@ class NetlifyCmsSource {
           })
     return {
       ...file.toJS(),
-      data: this.parseFields(
+      path: this.createPath({ dir, name }, actions),
+      data: await this.parseFields(
         content,
         file.get('fields'),
         collection.nodeCollection
@@ -108,11 +115,11 @@ class NetlifyCmsSource {
     }
   }
 
-  parseFields(content, fields, collection) {
+  async parseFields(content, fields, collection, path = '') {
     const parsedFields = {}
     for (const field of fields) {
       const widget = this.getWidget(field, collection)
-      parsedFields[field.get('name')] = widget.parse(content)
+      parsedFields[field.get('name')] = await widget.parse(content)
     }
     return parsedFields
   }
@@ -134,7 +141,7 @@ class NetlifyCmsSource {
     for (const collection of this.collections.values()) {
       if (collection.isFile) {
         const options = await this.createNodeFileOptions(
-          await this.transformNodeFiles(collection)
+          await this.transformNodeFiles(collection, actions)
         )
         collection.nodeCollection.addNode(options)
       } else {
@@ -210,7 +217,7 @@ class NetlifyCmsSource {
           collection.nodeCollection.updateNode(options)
         } else {
           const options = await this.createNodeFileOptions(
-            await this.transformNodeFiles(collection)
+            await this.transformNodeFiles(collection, actions)
           )
           collection.nodeCollection.updateNode(options)
         }
@@ -280,7 +287,6 @@ class NetlifyCmsSource {
   transformNodeContent(content, mimeType, collection) {
     const { _mimeTypes } = collection
     const transformer = collection._transformers[mimeType]
-
     if (!transformer) {
       throw new Error(`No transformer for '${mimeType}' is installed.`)
     }
