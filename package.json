@@ -1,6 +1,6 @@
 {
   "name": "@maxerbox/gridsome-source-netlify-cms",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Netlify-cms source for gridsome. Automatically load and parse folder and files collections.",
   "main": "index.js",
   "keywords": [
