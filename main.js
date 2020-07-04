@@ -6,6 +6,7 @@ import ListWidget from './widgets/list'
 import Widget from './widgets/widget'
 import MarkdownWidget from './widgets/markdown'
 import ImageWidget from './widgets/image'
+import FileWidget from './widgets/file'
 import { isSupportedMime } from './constants/plugin'
 
 const crypto = require('crypto')
@@ -132,6 +133,8 @@ class NetlifyCmsSource {
         return new MarkdownWidget(this, field, collection)
       case 'image':
         return new ImageWidget(this, field, collection)
+      case 'file':
+        return new FileWidget(this, field, collection)
       default:
         return new Widget(this, field, collection)
     }
