@@ -1,4 +1,3 @@
-import path from 'path'
 import { trimStart } from 'lodash'
 import Widget from './widget'
 
@@ -10,9 +9,13 @@ export default class ImageWidget extends Widget {
     ) {
       return null
     }
-    return content[this.field.get('name')].replace(
-      this.parser.netlifyConfig.get('public_folder'),
-      '!!assets-loader!@netlifyMedia'
+
+    return trimStart(
+      content[this.field.get('name')].replace(
+        this.parser.netlifyConfig.get('public_folder'),
+        ''
+      ),
+      '/'
     )
   }
 }
