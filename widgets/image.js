@@ -1,5 +1,4 @@
 import path from 'path'
-import { trimStart } from 'lodash'
 import Widget from './widget'
 
 export default class ImageWidget extends Widget {

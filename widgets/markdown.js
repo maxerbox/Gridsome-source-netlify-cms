@@ -11,7 +11,12 @@ export default class MarkdownWidget extends Widget {
       return null
     }
     return sanatize(marked(content[this.field.get('name')]), {
-      allowedTags: sanatize.defaults.allowedTags.concat(['h1', 'h2', 'img']),
+      allowedTags: sanatize.defaults.allowedTags.concat([
+        'h1',
+        'h2',
+        'img',
+        'span',
+      ]),
     })
   }
 }
