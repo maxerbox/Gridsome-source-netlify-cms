@@ -9,6 +9,8 @@ export default class MarkdownWidget extends Widget {
     ) {
       return null
     }
-    return marked(content[this.field.get('name')], { sanitize: false })
+    return marked(content[this.field.get('name')], {
+      xhtml: true,
+    })
   }
 }
