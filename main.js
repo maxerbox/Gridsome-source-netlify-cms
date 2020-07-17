@@ -106,13 +106,13 @@ class NetlifyCmsSource {
             merge: true,
           })
     return {
-      ...file.toJS(),
       path: this.createPath({ dir, name }, actions),
-      data: await this.parseFields(
+      _name: file.get('name'),
+      ...(await this.parseFields(
         content,
         file.get('fields'),
         collection.nodeCollection
-      ),
+      )),
     }
   }
 
@@ -230,7 +230,7 @@ class NetlifyCmsSource {
 
   // helpers
   createNodeFileOptions(node) {
-    node.id = this.createUid(node.name)
+    node.id = this.createUid(node._name)
     return node
   }
 
